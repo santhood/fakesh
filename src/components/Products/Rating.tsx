@@ -21,7 +21,7 @@ export default function Rating({ rating }: Props) {
       <div className="flex items-center">
         {generateRating(rating.rate).map((value) => {
           return value ? (
-            <div className="text-yellow-500">
+            <div key={crypto.randomUUID()} className="text-yellow-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -35,7 +35,7 @@ export default function Rating({ rating }: Props) {
               </svg>
             </div>
           ) : (
-            <div>
+            <div key={crypto.randomUUID()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
