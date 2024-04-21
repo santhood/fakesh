@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .title {
+    @apply font-syne font-black uppercase;
+  }
+}
+
+body {
+  @apply bg-zinc-900 text-white;
+}
