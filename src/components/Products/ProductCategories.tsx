@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Suspense, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function ProductCategories() {
   const [showCategories, setShowCategories] = useState(false)

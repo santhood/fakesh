@@ -1,52 +1,33 @@
-import ListOfProducts from "@/components/Products/ListOfProducts"
-import ProductItem from "@/components/Products/ProductItem"
-import { IProduct } from "@/types/products-types"
+import { Suspense } from "react"
+import { fetchRelatedProducts, fetchSingleProduct } from "@/lib/data"
+import ProductList from "@/components/Products/ProductList"
+import ProductListSkeleton from "@/components/Products/ProductListSkeleton"
+import SingleProduct from "@/components/Products/SingleProduct"
+import SingleProductSkeleton from "@/components/Products/SingleProductSkeleton"
 
-interface IParams {
-  id: number
-}
-
-interface Props {
-  params: IParams
-}
-
-const fetchProduct = async (productId: number) => {
-  const res = await fetch(`https://fakestoreapi.com/products/${productId}`)
-  return res.json()
-}
-
-const fetchRelatedProducts = async (productId: number, category: string) => {
-  const res = await fetch(
-    `https://fakestoreapi.com/products/category/${category}`,
-  )
-  const data = (await res.json()) as IProduct[]
-
-  return data.filter((product) => product.id !== productId)
-}
-
-export default async function SingleProductpPage({ params }: Props) {
-  const product = await fetchProduct(params.id)
-  const relatedProducts = await fetchRelatedProducts(
-    product.id,
-    product.category,
-  )
+export default async function page({ params }: { params: { id: number } }) {
+  const product = await fetchSingleProduct(params.id)
 
   return (
-    <main>
-      <section className="px-6">
-        <div className="mx-auto max-w-5xl">
-          <div className="min-h-96 pb-32 md:mt-10">
-            <ProductItem product={product} />
-          </div>
+    <main className="min-h-dvh px-6">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto min-h-96 max-w-5xl md:my-10">
+          <Suspense fallback={<SingleProductSkeleton />}>
+            <SingleProduct productId={params.id} />
+          </Suspense>
         </div>
-      </section>
 
-      <section className="px-6">
-        <div className="mx-auto max-w-7xl">
+        <div>
           <h2 className="title mb-8">Related Products</h2>
-          <ListOfProducts products={relatedProducts} />
+          <Suspense fallback={<ProductListSkeleton />}>
+            <ProductList
+              fetchProducts={() =>
+                fetchRelatedProducts(product.id, product.category)
+              }
+            />
+          </Suspense>
         </div>
-      </section>
+      </div>
     </main>
   )
 }

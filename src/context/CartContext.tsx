@@ -2,12 +2,13 @@
 
 import { createContext, useContext, useReducer, useState } from "react"
 import { ICartState, cartReducer } from "./CartReducer"
-import { IProductCart } from "@/types/cart-types"
+import { ProductCart } from "@/lib/definitions"
 
 interface ICartContext {
   showCart: boolean
-  cart: IProductCart[]
+  cart: ProductCart[]
   total: number
+  amount: number
   handleShowCart: (action: "SHOW" | "HIDDEN") => void
   handleAddToCart: (productId: number) => void
   handleAmountProduct: (
@@ -31,6 +32,7 @@ const intialState: ICartState = {
   showCart: false,
   cart: [],
   total: 0,
+  amount: 0,
 }
 
 // PROVIDER
@@ -65,6 +67,7 @@ export function CartProvider({ children }: ICartProvider) {
         showCart: state.showCart,
         cart: state.cart,
         total: state.total,
+        amount: state.amount,
         handleShowCart,
         handleAddToCart,
         handleAmountProduct,

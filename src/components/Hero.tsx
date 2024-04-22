@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export default function Hero() {
   return (
-    <div className="flex min-h-96 items-center py-8">
+    <div className="mx-auto flex min-h-96 max-w-4xl items-center py-8">
       <div className="text-center">
         <h1 className="font-syne text-3xl font-black uppercase sm:text-4xl">
           Discover Products That Fit Your Lifestyle

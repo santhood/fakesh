@@ -1,43 +1,38 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 
 export default function SearchBar() {
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const [searchValue, setSearchValue] = useState("")
+  const router = useRouter()
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
-
-      return params.toString()
-    },
-    [searchParams],
-  )
-
-  const handleSubmit = (ev: React.FormEvent) => {
+  const handleSearch = (ev: React.FormEvent) => {
     ev.preventDefault()
-    if (searchValue) {
-      router.push(`/store?${createQueryString("q", searchValue)}`)
+
+    const params = new URLSearchParams(searchParams)
+
+    if (searchTerm) {
+      params.set("query", searchTerm)
     } else {
-      router.push(`/store`)
+      params.delete("query")
     }
+    router.push(`/store?${params.toString()}`)
   }
 
   return (
     <form
       className="relative flex items-center text-sm"
-      onSubmit={handleSubmit}
+      onSubmit={handleSearch}
     >
       <input
         type="text"
+        name="search"
         placeholder="Search for products..."
-        value={searchValue}
+        value={searchTerm}
         onChange={(ev: React.ChangeEvent<HTMLInputElement>) =>
-          setSearchValue(ev.currentTarget.value)
+          setSearchTerm(ev.currentTarget.value)
         }
         className="w-full rounded-lg border border-zinc-600 bg-transparent py-2 pe-8 ps-3 placeholder:text-zinc-600 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-600"
       />

@@ -1,25 +1,43 @@
 import Link from "next/link"
 import Rating from "./Rating"
-import { IProduct } from "@/types/products-types"
+import { Product } from "@/lib/definitions"
 
-interface Props {
-  product: IProduct
+interface ProductListProps {
+  fetchProducts(): Promise<Product[]>
 }
 
-export default function ProductCard({ product }: Props) {
+interface ProductItemProps {
+  product: Product
+}
+
+export default async function ProductList({ fetchProducts }: ProductListProps) {
+  const products = await fetchProducts()
+
+  return (
+    <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {products.map((product) => (
+        <li key={crypto.randomUUID()}>
+          <ProductItem product={product} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function ProductItem({ product }: ProductItemProps) {
   return (
     <Link
       href={`/product/${product.id}`}
       className="block h-full bg-zinc-800 p-4"
     >
       <div className="flex flex-col gap-y-4">
-        <picture className="bg-white p-4">
+        <picture className="h-72 bg-white p-4">
           <img
             src={product.image}
             alt={product.title}
             loading="lazy"
             decoding="async"
-            className="h-72 w-full object-scale-down"
+            className="size-full object-scale-down"
           />
         </picture>
         <div>

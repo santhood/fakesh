@@ -2,11 +2,11 @@
 
 import { useCartContext } from "@/context/CartContext"
 
-interface Props {
+interface AddToCartProps {
   productId: number
 }
 
-export default function AddToCart({ productId }: Props) {
+export default function AddToCart({ productId }: AddToCartProps) {
   const { handleShowCart, handleAddToCart } = useCartContext()
 
   const handleClick = () => {

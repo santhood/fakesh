@@ -1,6 +1,6 @@
-import { IRating } from "@/types/products-types"
+import { Rating as IRating } from "@/lib/definitions"
 
-interface Props {
+interface RatingProps {
   rating: IRating
 }
 
@@ -15,7 +15,7 @@ const generateRating = (rating: number) => {
   return booleanRating
 }
 
-export default function Rating({ rating }: Props) {
+export default function Rating({ rating }: RatingProps) {
   return (
     <div className="flex items-center gap-x-2">
       <div className="flex items-center">

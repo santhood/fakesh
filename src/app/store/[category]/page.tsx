@@ -1,31 +1,24 @@
-import ListOfProducts from "@/components/Products/ListOfProducts"
+import { Suspense } from "react"
+import ProductList from "@/components/Products/ProductList"
+import { fetchProductsInCategory } from "@/lib/data"
+import ProductListSkeleton from "@/components/Products/ProductListSkeleton"
 
-interface IParams {
-  category: string
-}
-
-interface Props {
-  params: IParams
-}
-
-const fetchProductsForCategory = async (category: string) => {
-  const res = await fetch(
-    `https://fakestoreapi.com/products/category/${category}`,
-  )
-
-  return res.json()
-}
-
-export default async function StoreCategoryPage({ params }: Props) {
-  const productsForCategory = await fetchProductsForCategory(params.category)
-
+export default async function page({
+  params,
+}: {
+  params: {
+    category: string
+  }
+}) {
   return (
-    <main>
-      <section className="mt-10 px-6">
-        <div className="mx-auto max-w-7xl">
-          <ListOfProducts products={productsForCategory} />
-        </div>
-      </section>
+    <main className="mt-10 px-6">
+      <div className="mx-auto max-w-7xl">
+        <Suspense fallback={<ProductListSkeleton />}>
+          <ProductList
+            fetchProducts={() => fetchProductsInCategory(params.category)}
+          />
+        </Suspense>
+      </div>
     </main>
   )
 }

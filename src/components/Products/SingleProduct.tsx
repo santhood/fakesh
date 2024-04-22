@@ -1,21 +1,23 @@
-import { IProduct } from "@/types/products-types"
+import { fetchSingleProduct } from "@/lib/data"
 import Rating from "./Rating"
 import AddToCart from "./AddToCart"
 
-interface Props {
-  product: IProduct
+interface ProductItemProps {
+  productId: number
 }
 
-export default function ProductItem({ product }: Props) {
+export default async function SingleProduct({ productId }: ProductItemProps) {
+  const product = await fetchSingleProduct(productId)
+
   return (
-    <div className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
-      <picture className="bg-white p-4">
+    <div className="grid grid-cols-1 items-start gap-x-8 gap-y-4 md:grid-cols-2">
+      <picture className="h-72 bg-white p-4">
         <img
           src={product.image}
           alt={product.title}
           loading="lazy"
           decoding="async"
-          className="h-60 w-full object-scale-down"
+          className="size-full object-scale-down"
         />
       </picture>
       <div>

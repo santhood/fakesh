@@ -1,28 +1,22 @@
 import Hero from "@/components/Hero"
-import ListOfProducts from "@/components/Products/ListOfProducts"
-
-const fetchLatestProducts = async () => {
-  const res = await fetch("https://fakestoreapi.com/products?limit=6&sort=desc")
-  return res.json()
-}
+import ProductList from "@/components/Products/ProductList"
+import ProductListSkeleton from "@/components/Products/ProductListSkeleton"
+import { fetchRecentProducts } from "@/lib/data"
+import { Suspense } from "react"
 
 export default async function Home() {
-  const latestProducts = await fetchLatestProducts()
-
   return (
-    <main>
-      <section className="px-6">
-        <div className="mx-auto max-w-4xl">
-          <Hero />
-        </div>
-      </section>
+    <main className="px-6">
+      <div className="mx-auto max-w-7xl">
+        <Hero />
 
-      <section className="px-6">
-        <div className="mx-auto max-w-7xl">
-          <h2 className="title mb-8">Latest Products</h2>
-          <ListOfProducts products={latestProducts} />
-        </div>
-      </section>
+        <Suspense fallback={<ProductListSkeleton />}>
+          <div className="mt-10">
+            <h2 className="title mb-8">Recent Products</h2>
+            <ProductList fetchProducts={fetchRecentProducts} />
+          </div>
+        </Suspense>
+      </div>
     </main>
   )
 }

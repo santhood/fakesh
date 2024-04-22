@@ -1,15 +1,15 @@
-import { IProductCart } from "@/types/cart-types"
-import { IProduct } from "@/types/products-types"
+import { Product, ProductCart } from "@/lib/definitions"
 
 export interface ICartState {
   showCart: boolean
-  cart: IProductCart[]
+  cart: ProductCart[]
   total: number
+  amount: number
 }
 
 type ActionType =
   | { type: "SHOW" | "HIDDEN" }
-  | { type: "ADD"; payload: IProduct }
+  | { type: "ADD"; payload: Product }
   | { type: "INCREASE" | "DECREASE"; payload: number }
 
 export const cartReducer = (state: ICartState, action: ActionType) => {
@@ -33,6 +33,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
       if (isExistingProduct >= 0) {
         const newCartState = structuredClone(state.cart)
         newCartState[isExistingProduct].amount += 1
+
         return {
           ...state,
           cart: newCartState,
@@ -42,6 +43,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
               newCartState[isExistingProduct].amount
             ).toFixed(2),
           )),
+          amount: state.amount + 1,
         }
       }
 
@@ -49,7 +51,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
         ...state,
         cart: [...state.cart, { ...action.payload, amount: 1 }],
         total: state.total + action.payload.price,
-        loading: false,
+        amount: state.amount + 1,
       }
     }
 
@@ -65,6 +67,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
         total: Number(
           (state.total + newCartState[isExistingProduct].price).toFixed(2),
         ),
+        amount: state.amount + 1,
       }
     }
 
@@ -79,6 +82,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
         return {
           ...state,
           cart: newCartState.filter((product) => product.amount > 0),
+          amount: state.amount - 1,
         }
       }
 
@@ -88,6 +92,7 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
         total: Number(
           (state.total - newCartState[isExistingProduct].price).toFixed(2),
         ),
+        amount: state.amount - 1,
       }
     }
 

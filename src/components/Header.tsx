@@ -51,7 +51,9 @@ export default function Header() {
               className={`${showMenu ? "translate-x-0" : "-translate-x-full"} relative z-50 flex w-full flex-col gap-x-4 bg-zinc-900 p-6 transition-transform delay-100 duration-300 md:w-[31.25rem] lg:w-full lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:justify-between lg:p-0`}
             >
               <div className="flex items-center justify-between lg:hidden">
-                <Logo />
+                <div onClick={() => setShowMenu(false)}>
+                  <Logo />
+                </div>
                 <button type="button" onClick={() => setShowMenu(false)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -79,6 +81,7 @@ export default function Header() {
                     <Link
                       href={link.route}
                       className="text-lg text-zinc-400 transition-colors duration-300 hover:text-white lg:text-base"
+                      onClick={() => setShowMenu(false)}
                     >
                       {link.label}
                     </Link>
