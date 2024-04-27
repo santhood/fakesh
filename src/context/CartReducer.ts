@@ -82,6 +82,9 @@ export const cartReducer = (state: ICartState, action: ActionType) => {
         return {
           ...state,
           cart: newCartState.filter((product) => product.amount > 0),
+          total: Number(
+            (state.total - newCartState[isExistingProduct].price).toFixed(2),
+          ),
           amount: state.amount - 1,
         }
       }
